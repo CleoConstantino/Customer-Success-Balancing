@@ -14,6 +14,47 @@ function customerSuccessBalancing(
    * =========== Write your solution here ==========
    * ===============================================
    */
+
+  var result = 0,
+    currentCount = 0,
+    lastCount = 0;
+
+  var filteredCss = customerSuccess.filter(function(value) {
+    return customerSuccessAway.indexOf(value.id) == -1;
+  });
+
+  filteredCss.sort(function(x, y) {
+    return x.score - y.score;
+  });
+
+  filteredCss.forEach(function(cs) {
+    currentCount = 0;
+
+    customers.forEach(function(customer) {
+
+      if (customer.score <= cs.score) {
+        currentCount += 1;
+      }
+
+    });
+
+    customers = customers.filter(function(value) {
+      return value.score > cs.score;
+    });
+
+    if (lastCount == currentCount) {
+      result = 0;
+    }
+
+    if (lastCount < currentCount) {
+      lastCount = currentCount;
+      result = cs.id;
+    }
+
+  });
+
+  return result;
+  
 }
 
 test("Scenario 1", () => {
